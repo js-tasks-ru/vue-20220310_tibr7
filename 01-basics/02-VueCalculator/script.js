@@ -36,7 +36,7 @@ const vm = createApp({
 
 }).mount('#app');
 
-window.vm=vm;
+//window.vm=vm;
 
 // Создайте Vue приложение
 
