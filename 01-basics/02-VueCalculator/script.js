@@ -32,8 +32,6 @@ const vm = createApp({
 
   }
 
-
-
 }).mount('#app');
 
 //window.vm=vm;
