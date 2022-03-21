@@ -28,7 +28,7 @@ export default defineComponent({
   },
 
   template: `
-    <div>
+    <div  v-if="meetup">
       <!-- meetup cover-->
       <meetup-cover :title="meetup.title" :image="meetup.image"></meetup-cover>
       <ui-container>

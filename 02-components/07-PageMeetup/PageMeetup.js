@@ -27,25 +27,24 @@ export default defineComponent({
   data() {
     return {
       meetup: {type: Object,},
-      load:true,
+      isLoading:1,
+      err:'Test Error',
     };
   },
 
   methods: {
     GetMeetup() {
       fetchMeetupById(this.meetupId).then((meetup) => {
-          this.load=false;
+          this.isLoading=2;
            this.meetup = meetup;
 
       },
-       ()=>{
-         this.load=false;
-         this.meetup = null;
-        });
+        (err) => {this.err=err.message;this.isLoading=3;this.meetup=null;}
+       ) ;
     },
   },
   watch: {
-    meetupId(){this.GetMeetup();}
+    meetupId(){this.isLoading=1;this.GetMeetup();}
   },
   created() {
     this.GetMeetup();
@@ -56,14 +55,21 @@ export default defineComponent({
   template: `
     <div class="page-meetup">
     <!-- meetup view -->
-    <ui-container v-if="load">
-      <ui-alert>Загрузка...</ui-alert>
-    </ui-container>
 
-      <meetup-view   v-if="meetup" :meetup="meetup"></meetup-view>
-      <ui-container v-else>
-         <ui-alert>Not fond</ui-alert>
-      </ui-container>
+     <ui-container v-if="isLoading===1">
+       <ui-alert>Загрузка...</ui-alert>
+     </ui-container>
+
+    <meetup-view   v-if="isLoading===2" :meetup="meetup" />
+
+    <ui-container v-if="isLoading===3">
+        <ui-alert>{{ err }}</ui-alert>
+     </ui-container>
+
+
+
+
+
 
 
 
