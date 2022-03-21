@@ -26,25 +26,26 @@ export default defineComponent({
 
   data() {
     return {
-      meetup: {type: Object,},
-      isLoading:1,
-      err:'Test Error',
+      meetup: null,
+      state: 'loading',
+      err:'',
     };
   },
 
   methods: {
     GetMeetup() {
+      this.state='loading';
       fetchMeetupById(this.meetupId).then((meetup) => {
-          this.isLoading=2;
+          this.state='uploaded';
            this.meetup = meetup;
 
       },
-        (err) => {this.err=err.message;this.isLoading=3;this.meetup=null;}
+        (err) => {this.err=err.message;this.state='error';this.meetup=null;}
        ) ;
     },
   },
   watch: {
-    meetupId(){this.isLoading=1;this.GetMeetup();}
+    meetupId(){this.GetMeetup();}
   },
   created() {
     this.GetMeetup();
@@ -56,13 +57,13 @@ export default defineComponent({
     <div class="page-meetup">
     <!-- meetup view -->
 
-     <ui-container v-if="isLoading===1">
+     <ui-container v-if="state==='loading'">
        <ui-alert>Загрузка...</ui-alert>
      </ui-container>
 
-    <meetup-view   v-if="isLoading===2" :meetup="meetup" />
+    <meetup-view   v-if="state==='uploaded'" :meetup="meetup" />
 
-    <ui-container v-if="isLoading===3">
+    <ui-container v-if="state==='error'">
         <ui-alert>{{ err }}</ui-alert>
      </ui-container>
 
