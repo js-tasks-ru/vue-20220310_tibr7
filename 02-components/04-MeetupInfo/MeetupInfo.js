@@ -35,7 +35,7 @@ export default defineComponent({
       </li>
       <li>
         <img class="icon meetup-info__icon" alt="icon" src="/assets/icons/icon-cal-lg.svg" />
-        <time :datetime="formatAsLocalDate(date)">{{ formatAsLocalDate(date) }}</time>
+        <time :datetime="formatAsIsoDate(date)">{{ formatAsLocalDate(date) }}</time>
       </li>
     </ul>`,
 });

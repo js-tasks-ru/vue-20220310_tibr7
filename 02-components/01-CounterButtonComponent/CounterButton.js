@@ -8,6 +8,7 @@ export default defineComponent({
     count: {
       type: Number,
       required: true,
+      default:0,
     },
    },
 
