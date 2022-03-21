@@ -1,26 +1,71 @@
 import { defineComponent } from './vendor/vue.esm-browser.js';
 import UiContainer from './UiContainer.js';
 import UiAlert from './UiAlert.js';
-// import { fetchMeetupById } from './meetupService.js';
+import MeetupView from "../06-MeetupView/MeetupView.js";
+
+import { fetchMeetupById } from './meetupService.js';
+
+
+
 
 export default defineComponent({
   name: 'PageMeetup',
-
+  fetchMeetupById,
   components: {
     UiAlert,
     UiContainer,
+    MeetupView,
+
   },
+  props: {
+    meetupId: {
+      type:Number,
+      required: true,
+    },
+  },
+
+  data() {
+    return {
+      meetup: {type: Object,},
+      load:true,
+    };
+  },
+
+  methods: {
+    GetMeetup() {
+      fetchMeetupById(this.meetupId).then((meetup) => {
+          this.load=false;
+           this.meetup = meetup;
+
+      },
+       ()=>{
+         this.load=false;
+         this.meetup = null;
+        });
+    },
+  },
+  watch: {
+    meetupId(){this.GetMeetup();}
+  },
+  created() {
+    this.GetMeetup();
+  },
+
+
 
   template: `
     <div class="page-meetup">
-      <!-- meetup view -->
+    <!-- meetup view -->
+    <ui-container v-if="load">
+      <ui-alert>Загрузка...</ui-alert>
+    </ui-container>
 
-      <ui-container>
-        <ui-alert>Загрузка...</ui-alert>
+      <meetup-view   v-if="meetup" :meetup="meetup"></meetup-view>
+      <ui-container v-else>
+         <ui-alert>Not fond</ui-alert>
       </ui-container>
 
-      <ui-container>
-        <ui-alert>error</ui-alert>
-      </ui-container>
+
+
     </div>`,
 });
