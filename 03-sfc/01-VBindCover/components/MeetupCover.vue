@@ -31,8 +31,7 @@ export default {
 .meetup-cover {
   background-size: cover;
   background-position: center;
-  /**/
-   background-image: v-bind(getBackground);
+  background-image: v-bind(getBackground);
   display: flex;
   flex-direction: column;
   align-items: center;
