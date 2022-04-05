@@ -35,7 +35,7 @@ export default {
       isActive:false,
       iconTrue:false,
       icon:'',
-      text:'',
+      text:this.title,
 
     }
 
@@ -58,33 +58,24 @@ export default {
     let arr=this.options.filter(obj => 'icon' in  obj ?obj:false);
     if(arr.length){
           this.iconTrue=true;
-
-     }
-    this.getValue();
+   }
+    if(this.modelValue){
+      this.upValue(this.modelValue);
+    }
 
    },
 
   watch:{
     modelValue(){
-      this.getValue();
+      if(this.modelValue){
+        this.upValue(this.modelValue);
+      }
     },
 
 
   },
 
   methods:{
-    getValue(){
-
-      if(this.modelValue){
-        this.upValue(this.modelValue);
-
-      }else{
-        this.text=this.title;
-        if(this.iconTrue) {
-          this.icon = this.icon;
-        }
-      }
-    },
 
     upValue(value){
       this.isActive=false;
