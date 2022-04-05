@@ -2,17 +2,17 @@
 
 
   <div class="dropdown"   :class="{dropdown_opened : isActive}">
-    <button type="button" @click="isActive=isActive?false:true" class="dropdown__toggle dropdown__toggle_icon">
-      <ui-icon v-if="icon" :icon="icon" class="dropdown__icon" />
-      <span>{{ title_select }}</span>
+    <button type="button" @click="isActive=isActive?false:true;" class="dropdown__toggle"   :class="{dropdown__toggle_icon : iconTrue}" >
+      <ui-icon v-if="icon"  :icon="`${icon}`" class="dropdown__icon" />
+      <span>{{ text }}</span>
 
 
 
 
     </button>
 
-    <div class="dropdown__menu" role="listbox">
-      <button @click="$emit('update:modelValue',option.value);" v-for="option in options" class="dropdown__item dropdown__item_icon" role="option" type="button">
+    <div v-show="isActive" class="dropdown__menu" role="listbox">
+      <button   @click="upValue(option.value);$emit('update:modelValue',option.value);" v-for="option in options" class="dropdown__item "   :class="{dropdown__item_icon : iconTrue}"    role="option" type="button">
         <ui-icon  v-if="option.icon"  :icon="`${option.icon}`" class="dropdown__icon" />
         {{ option.text }}
       </button>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+
 import UiIcon from './UiIcon';
 
 export default {
@@ -29,46 +30,78 @@ export default {
 
   components: { UiIcon },
  data(){
+
     return{
-      icon:'',
       isActive:false,
-      title_select:this.title,
+      iconTrue:false,
+      icon:'',
+      text:'',
+
     }
 
  },
 
 
   emits:   ['update:modelValue'],
-  watch:{
-    modelValue(n,o){
-      if(n) {
-        this.aaa();
-      }
-    },
-  },
 
-  mounted(){
-    this.aaa();
-  },
-methods:{
-    aaa(){
-      let result=this.options.filter(obj => obj.value === this.modelValue ? obj : false);
-      if(!result.length){return false;}
-      let {v, text, icon} = result[0];
-      this.isActive=false;
-      this.title_select=text;
-      this.icon=icon;
-
-    }
-},
 
   props:{
     options: Object,
     title:String,
-    modelValue:{
+      modelValue:{
       type:String,
     },
   },
+
+
+  created(){
+    let arr=this.options.filter(obj => 'icon' in  obj ?obj:false);
+    if(arr.length){
+          this.iconTrue=true;
+
+     }
+    this.getValue();
+
+   },
+
+  watch:{
+    modelValue(){
+      this.getValue();
+    },
+
+
+  },
+
+  methods:{
+    getValue(){
+
+      if(this.modelValue){
+        this.upValue(this.modelValue);
+
+      }else{
+        this.text=this.title;
+        if(this.iconTrue) {
+          this.icon = this.icon;
+        }
+      }
+    },
+
+    upValue(value){
+      this.isActive=false;
+      let [obj]=this.options.filter(obj => obj.value===value?obj:false);
+      this.text=obj.text;
+      if(this.iconTrue) {
+        this.icon = obj.icon;
+      }
+
+
+    },
+
+
+  },
+
+
+//=this.options.filter(obj => obj.value===this.modelValue?obj:false);
 
 
 

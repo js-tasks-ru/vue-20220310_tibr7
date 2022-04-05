@@ -5,18 +5,17 @@
       <button @click="selectedType = 'registration'">Set registration</button>
     </p>
     <p>
-      <ui-dropdown  v-model="selectedType" :options="agendaItemTypes" title="Событие" />
+      <ui-dropdown v-model="selectedType" :options="agendaItemTypes" title="Событие" />
     </p>
     <p>selectedLang = {{ selectedLang }}</p>
     <p>
-      <ui-dropdown  v-model="selectedLang" :options="langOptions" title="Язык" />
+      <ui-dropdown v-model="selectedLang" :options="langOptions" title="Язык" />
     </p>
   </div>
 </template>
 
 <script>
 import UiDropdown from './components/UiDropdown';
-
 const agendaIconMap = {
   registration: 'key',
   opening: 'cal-sm',
@@ -27,7 +26,6 @@ const agendaIconMap = {
   afterparty: 'cal-sm',
   other: 'cal-sm',
 };
-
 const agendaItemTypes = [
   {
     value: 'registration',
@@ -65,19 +63,16 @@ const agendaItemTypes = [
   ...item,
   icon: agendaIconMap[item.value],
 }));
-
 export default {
   name: 'App',
   components: { UiDropdown },
   data() {
     return {
       agendaItemTypes,
-
       langOptions: [
         { value: 'EN', text: 'EN' },
         { value: 'RU', text: 'RU' },
       ],
-
       selectedLang: 'EN',
       selectedType: undefined,
     };
