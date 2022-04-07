@@ -1,7 +1,7 @@
 <template >
   <div class="toasts">
   <div v-for="item in arr" :class="`toast toast_${item.type}`">
-    <ui-icon class="toast__icon" :icon="`${item.icon}-circle`" />
+    <ui-icon class="toast__icon" :icon="item.icon" />
     <span>{{ item.title }}</span>
   </div>
 
@@ -25,13 +25,13 @@ export default {
 
   methods: {
     success(m) {
-      let obj={title:m,type:'success',icon:'check'};
+      let obj={title:m,type:'success',icon:'check-circle'};
       this.arr.push(obj);
       this.spliceArr(obj,5000);
     },
 
     error(m) {
-      let obj={title:m,type:'error',icon:'alert'};
+      let obj={title:m,type:'error',icon:'alert-circle'};
       this.arr.push(obj);
       this.spliceArr(obj,5000);
      },

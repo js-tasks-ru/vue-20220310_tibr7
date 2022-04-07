@@ -2,9 +2,9 @@
 
 
   <div class="dropdown"   :class="{dropdown_opened : isActive}">
-    <button type="button" @click="isActive=isActive?false:true;" class="dropdown__toggle"   :class="{dropdown__toggle_icon : iconTrue}" >
-      <ui-icon v-if="icon"  :icon="`${icon}`" class="dropdown__icon" />
-      <span>{{ text }}</span>
+    <button type="button" @click="isActive=!isActive;" class="dropdown__toggle"   :class="{dropdown__toggle_icon : iconTr()}" >
+      <ui-icon v-if="cValue().icon"  :icon="cValue().icon" class="dropdown__icon" />
+      <span>{{ cValue().text }}</span>
 
 
 
@@ -12,8 +12,8 @@
     </button>
 
     <div v-show="isActive" class="dropdown__menu" role="listbox">
-      <button   @click="upValue(option.value);$emit('update:modelValue',option.value);" v-for="option in options" class="dropdown__item "   :class="{dropdown__item_icon : iconTrue}"    role="option" type="button">
-        <ui-icon  v-if="option.icon"  :icon="`${option.icon}`" class="dropdown__icon" />
+      <button   @click="upValue(option.value);" v-for="option in options" class="dropdown__item "   :class="{dropdown__item_icon : iconTr()}"    role="option" type="button">
+        <ui-icon  v-if="option.icon"  :icon="option.icon" class="dropdown__icon" />
         {{ option.text }}
       </button>
 
@@ -33,11 +33,7 @@ export default {
 
     return{
       isActive:false,
-      iconTrue:false,
-      icon:'',
-      text:this.title,
-
-    }
+   }
 
  },
 
@@ -53,48 +49,26 @@ export default {
     },
   },
 
-
-  created(){
-    let arr=this.options.filter(obj => 'icon' in  obj ?obj:false);
-    if(arr.length){
-          this.iconTrue=true;
-   }
-    if(this.modelValue){
-      this.upValue(this.modelValue);
-    }
-
-   },
-
-  watch:{
-    modelValue(){
-      if(this.modelValue){
-        this.upValue(this.modelValue);
-      }
-    },
-
-
-  },
-
   methods:{
 
-    upValue(value){
-      this.isActive=false;
-      let [obj]=this.options.filter(obj => obj.value===value?obj:false);
-      this.text=obj.text;
-      if(this.iconTrue) {
-        this.icon = obj.icon;
-      }
+      iconTr(){
+        const even=(obj) => 'icon' in  obj;
+        return this.options.some(even);
+      },
 
+     cValue(){
+          if(!this.modelValue){
+            return {text:this.title};
+          }
+       return this.options.find(obj => obj.value===this.modelValue);
+     },
 
-    },
-
+       upValue(value){
+        this.isActive=false;
+        this.$emit('update:modelValue',value);
+        },
 
   },
-
-
-//=this.options.filter(obj => obj.value===this.modelValue?obj:false);
-
-
 
 };
 </script>
