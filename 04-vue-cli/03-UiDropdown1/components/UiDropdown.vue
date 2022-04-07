@@ -2,9 +2,9 @@
 
 
   <div class="dropdown"   :class="{dropdown_opened : isActive}">
-    <button type="button" @click="isActive=!isActive;" class="dropdown__toggle"   :class="{dropdown__toggle_icon : iconTr()}" >
-      <ui-icon v-if="cValue().icon"  :icon="cValue().icon" class="dropdown__icon" />
-      <span>{{ cValue().text }}</span>
+    <button type="button" @click="isActive=!isActive;" class="dropdown__toggle"   :class="{dropdown__toggle_icon : iconTr}" >
+      <ui-icon v-if="cValue.icon"  :icon="cValue.icon" class="dropdown__icon" />
+      <span>{{ cValue.text }}</span>
 
 
 
@@ -12,7 +12,7 @@
     </button>
 
     <div v-show="isActive" class="dropdown__menu" role="listbox">
-      <button   @click="upValue(option.value);" v-for="option in options" class="dropdown__item "   :class="{dropdown__item_icon : iconTr()}"    role="option" type="button">
+      <button   @click="upValue(option.value);" v-for="option in options" class="dropdown__item "   :class="{dropdown__item_icon : iconTr}"    role="option" type="button">
         <ui-icon  v-if="option.icon"  :icon="option.icon" class="dropdown__icon" />
         {{ option.text }}
       </button>
@@ -49,19 +49,23 @@ export default {
     },
   },
 
+ computed:{
+   iconTr(){
+     const even=(obj) => 'icon' in  obj;
+     return this.options.some(even);
+   },
+   cValue(){
+     if(!this.modelValue){
+       return {text:this.title};
+     }
+     return this.options.find(obj => obj.value===this.modelValue);
+   },
+
+ },
+
+
+
   methods:{
-
-      iconTr(){
-        const even=(obj) => 'icon' in  obj;
-        return this.options.some(even);
-      },
-
-     cValue(){
-          if(!this.modelValue){
-            return {text:this.title};
-          }
-       return this.options.find(obj => obj.value===this.modelValue);
-     },
 
        upValue(value){
         this.isActive=false;
