@@ -16,7 +16,6 @@
 
 <script>
 import UiDropdown from './components/UiDropdown';
-
 const agendaIconMap = {
   registration: 'key',
   opening: 'cal-sm',
@@ -27,7 +26,6 @@ const agendaIconMap = {
   afterparty: 'cal-sm',
   other: 'cal-sm',
 };
-
 const agendaItemTypes = [
   {
     value: 'registration',
@@ -65,19 +63,16 @@ const agendaItemTypes = [
   ...item,
   icon: agendaIconMap[item.value],
 }));
-
 export default {
   name: 'App',
   components: { UiDropdown },
   data() {
     return {
       agendaItemTypes,
-
       langOptions: [
         { value: 'EN', text: 'EN' },
         { value: 'RU', text: 'RU' },
       ],
-
       selectedLang: 'EN',
       selectedType: undefined,
     };

@@ -1,15 +1,12 @@
-<template>
+<template >
   <div class="toasts">
-    <div class="toast toast_success">
-      <ui-icon class="toast__icon" icon="check-circle" />
-      <span>Success Toast Example</span>
-    </div>
-
-    <div class="toast toast_error">
-      <ui-icon class="toast__icon" icon="alert-circle" />
-      <span>Error Toast Example</span>
-    </div>
+  <div v-for="item in arr" :class="`toast toast_${item.type}`">
+    <ui-icon class="toast__icon" :icon="item.icon" />
+    <span>{{ item.title }}</span>
   </div>
+
+  </div>
+
 </template>
 
 <script>
@@ -17,8 +14,40 @@ import UiIcon from './UiIcon';
 
 export default {
   name: 'TheToaster',
-
   components: { UiIcon },
+  data() {
+    return {
+    arr:[],
+
+    };
+  },
+
+
+  methods: {
+    success(m) {
+      let obj={title:m,type:'success',icon:'check-circle'};
+      this.arr.push(obj);
+      this.spliceArr(obj,5000);
+    },
+
+    error(m) {
+      let obj={title:m,type:'error',icon:'alert-circle'};
+      this.arr.push(obj);
+      this.spliceArr(obj,5000);
+     },
+
+    spliceArr(obj,time=5000){
+      setTimeout(()=>{
+        let i=this.arr.indexOf(obj);
+        this.arr.splice(i,1);
+      }, time);
+    },
+
+
+  },
+
+
+
 };
 </script>
 

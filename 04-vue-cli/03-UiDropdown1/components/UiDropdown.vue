@@ -1,30 +1,74 @@
 <template>
-  <div class="dropdown dropdown_opened">
-    <button type="button" class="dropdown__toggle dropdown__toggle_icon">
-      <ui-icon icon="tv" class="dropdown__icon" />
-      <span>Title</span>
+
+
+  <div class="dropdown"   :class="{dropdown_opened : isActive}">
+    <button type="button" @click="isActive=!isActive;" class="dropdown__toggle"   :class="{dropdown__toggle_icon : iconTr}" >
+      <ui-icon v-if="cValue.icon"  :icon="cValue.icon" class="dropdown__icon" />
+      <span>{{ cValue.text }}</span>
     </button>
 
-    <div class="dropdown__menu" role="listbox">
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <ui-icon icon="tv" class="dropdown__icon" />
-        Option 1
+    <div v-show="isActive" class="dropdown__menu" role="listbox">
+      <button   @click="upValue(option.value);" v-for="option in options" class="dropdown__item "   :class="{dropdown__item_icon : iconTr}"    role="option" type="button">
+        <ui-icon  v-if="option.icon"  :icon="option.icon" class="dropdown__icon" />
+        {{ option.text }}
       </button>
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <ui-icon icon="tv" class="dropdown__icon" />
-        Option 2
-      </button>
+
     </div>
   </div>
 </template>
 
 <script>
+
 import UiIcon from './UiIcon';
 
 export default {
   name: 'UiDropdown',
 
   components: { UiIcon },
+ data(){
+
+    return{
+      isActive:false,
+   }
+
+ },
+
+
+  emits:   ['update:modelValue'],
+
+
+  props:{
+    options: Object,
+    title:String,
+      modelValue:{
+      type:String,
+    },
+  },
+
+ computed:{
+   iconTr(){
+     return this.options.some((obj) => 'icon' in  obj);
+   },
+   cValue(){
+     if(!this.modelValue){
+       return {text:this.title};
+     }
+     return this.options.find(obj => obj.value===this.modelValue);
+   },
+
+ },
+
+
+
+  methods:{
+
+       upValue(value){
+        this.isActive=false;
+        this.$emit('update:modelValue',value);
+        },
+
+  },
+
 };
 </script>
 
