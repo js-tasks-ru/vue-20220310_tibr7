@@ -5,10 +5,6 @@
     <button type="button" @click="isActive=!isActive;" class="dropdown__toggle"   :class="{dropdown__toggle_icon : iconTr}" >
       <ui-icon v-if="cValue.icon"  :icon="cValue.icon" class="dropdown__icon" />
       <span>{{ cValue.text }}</span>
-
-
-
-
     </button>
 
     <div v-show="isActive" class="dropdown__menu" role="listbox">
@@ -51,8 +47,7 @@ export default {
 
  computed:{
    iconTr(){
-     const even=(obj) => 'icon' in  obj;
-     return this.options.some(even);
+     return this.options.some((obj) => 'icon' in  obj);
    },
    cValue(){
      if(!this.modelValue){
