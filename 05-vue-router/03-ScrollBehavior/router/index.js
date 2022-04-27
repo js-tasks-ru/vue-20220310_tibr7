@@ -3,6 +3,28 @@ import { createRouter, createWebHistory } from 'vue-router';
 export const router = createRouter({
   history: createWebHistory('/05-vue-router/03-ScrollBehavior'),
 
+  scrollBehavior(to, from, savedPosition) {
+
+
+        if(to.meta.saveScrollPosition && !from.meta.saveScrollPosition){
+         return { top: 0, left: 0 };
+        }
+        if(to.meta.saveScrollPosition && from.meta.saveScrollPosition){
+          return false;
+        }
+        if (savedPosition) {
+          return savedPosition;//активируется при перезапуске и при клике на кнопке возврата в браузере
+        }
+        if (to.hash) {
+          return { el: to.hash, };
+        }
+        if(from.path!=to.path){
+          return { top: 0, left: 0 };
+        }
+        return { top: 0, left: 0 };
+
+  },
+
   routes: [
     {
       path: '/',
@@ -41,4 +63,7 @@ export const router = createRouter({
       ],
     },
   ],
+
+
+
 });
